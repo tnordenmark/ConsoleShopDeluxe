@@ -14,7 +14,6 @@ namespace ConsoleShopDeluxe
         public double Price { get; set; }
 
         #region Constructor
-        public Item() { }
         public Item(string pPartNo, string pName, Category pCategory, double pPrice)
         {
             PartNo = pPartNo;
@@ -46,6 +45,13 @@ namespace ConsoleShopDeluxe
             return Price.CompareTo(other.Price);
         }
         #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return string.Format("{0,-6}{1,-20}{2,-12}{3,-12:C2}", PartNo, Name, Category, Price);
+        }
+        #endregion
     }
 
     public enum Category
@@ -54,5 +60,13 @@ namespace ConsoleShopDeluxe
         Snacks,
         Meat,
         Vegetables
+    }
+
+    public enum SortProp
+    {
+        price,
+        name,
+        priceAndName,
+        priceAndCategory
     }
 }
