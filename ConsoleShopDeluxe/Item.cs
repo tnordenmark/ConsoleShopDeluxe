@@ -11,10 +11,10 @@ namespace ConsoleShopDeluxe
         public string PartNo { get; set; }
         public string Name { get; set; }
         public Category Category { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
 
         #region Constructor
-        public Item(string pPartNo, string pName, Category pCategory, double pPrice)
+        public Item(string pPartNo, string pName, Category pCategory, decimal pPrice)
         {
             PartNo = pPartNo;
             Name = pName;

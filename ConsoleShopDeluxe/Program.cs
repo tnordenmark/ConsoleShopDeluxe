@@ -13,18 +13,18 @@ namespace ConsoleShopDeluxe
             // Populate the shop storage with some test items
             ShopStorage storage = new ShopStorage(new Dictionary<Item, int>
             {
-                { new Item("1001", "Juice", Category.Drinks, 24.90), 20 },
-                { new Item("2001", "Bacon", Category.Meat, 12.90), 100 },
-                { new Item("2002", "Sausage", Category.Meat, 29.90), 50 },
-                { new Item("3001", "Potato Chips", Category.Snacks, 18.90), 150 },
-                { new Item("4001", "Lettuce", Category.Vegetables, 14.50), 80 },
-                { new Item("4002", "Tomato", Category.Vegetables, 21.90), 70 },
-                { new Item("1002", "Beer", Category.Drinks, 12.50), 30 },
-                { new Item("3002", "Cashew Nuts", Category.Snacks, 48.50), 55 },
-                { new Item("2003", "Beef", Category.Meat, 129.90), 25 },
-                { new Item("4003", "Cucumber", Category.Vegetables, 8.50), 40 },
-                { new Item("1003", "Coffee", Category.Drinks, 39.90), 42 },
-                { new Item("3003", "Popcorn", Category.Snacks, 8.90), 37 }
+                { new Item("1001", "Juice", Category.Drinks, 24.90m), 20 },
+                { new Item("2001", "Bacon", Category.Meat, 12.90m), 100 },
+                { new Item("2002", "Sausage", Category.Meat, 29.90m), 50 },
+                { new Item("3001", "Potato Chips", Category.Snacks, 18.90m), 150 },
+                { new Item("4001", "Lettuce", Category.Vegetables, 14.50m), 80 },
+                { new Item("4002", "Tomato", Category.Vegetables, 21.90m), 70 },
+                { new Item("1002", "Beer", Category.Drinks, 12.50m), 30 },
+                { new Item("3002", "Cashew Nuts", Category.Snacks, 48.50m), 55 },
+                { new Item("2003", "Beef", Category.Meat, 129.90m), 25 },
+                { new Item("4003", "Cucumber", Category.Vegetables, 8.50m), 40 },
+                { new Item("1003", "Coffee", Category.Drinks, 39.90m), 42 },
+                { new Item("3003", "Popcorn", Category.Snacks, 8.90m), 37 }
             }, 0);
 
             bool showMainMenu = true;
