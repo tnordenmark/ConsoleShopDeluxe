@@ -5,4 +5,4 @@ Console store application written in C# .NET to practice LINQ.
 * List items
 * Search items work so far.
 
-Kind of a mistake to redesign everything from scratch.
+Kind of a mistake to redesign everything from scratch in only two days.
