@@ -76,6 +76,7 @@ namespace ConsoleShopDeluxe
         priceLower,
         priceHigher,
         priceAndName,
-        priceOrNameByCat
+        nameByCategory,
+        priceByCategory
     }
 }

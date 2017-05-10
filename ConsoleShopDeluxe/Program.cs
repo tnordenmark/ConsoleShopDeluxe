@@ -10,6 +10,8 @@ namespace ConsoleShopDeluxe
     {
         static void Main(string[] args)
         {
+            // Create a shopping cart object for later
+            ShoppingCart cart = new ShoppingCart(new Dictionary<Item, int>(), 0);
             // Populate the shop storage with some test items
             ShopStorage storage = new ShopStorage(new Dictionary<Item, int>
             {
@@ -55,6 +57,13 @@ namespace ConsoleShopDeluxe
                                     Menu.PrintHeader();
                                     foreach(var kvp in storage.Sort(SortProp.price))
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                    Console.WriteLine("Enter 1 - 3 part numbers separated by space to add to cart.");
+                                    Console.Write("Part #: ");
+                                    string partNo = Console.ReadLine();
+                                    string partOne = partNo.Substring(0, 4);
+                                    string partTwo = partNo.Substring(5, 4);
+                                    string partThree = partNo.Substring(10, 4);
+                                    // Do some shizzle manizzle with partOne, partTwo and partThree
                                     Console.WriteLine();
                                     break;
                                 case 2:
@@ -77,7 +86,6 @@ namespace ConsoleShopDeluxe
                                     break;
                                 case 5:
                                     Menu.PrintHeader();
-                                    
                                     foreach(var kvp in storage.Items)
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
                                     Console.WriteLine();
@@ -156,8 +164,41 @@ namespace ConsoleShopDeluxe
                                     Console.WriteLine();
                                     break;
                                 case 5:
-                                    Console.Write("Category");
+                                    // Print available categories from Enum
+                                    Console.Write("Available categories: ");
+                                    Console.WriteLine("{0}, {1}, {2}, {3}",
+                                        Enum.GetName(typeof(Category), 0),
+                                        Enum.GetName(typeof(Category), 1),
+                                        Enum.GetName(typeof(Category), 2),
+                                        Enum.GetName(typeof(Category), 3));
+                                    
+                                    Console.Write("Category: ");
                                     string catInput = Console.ReadLine();
+                                    Console.Write("Name or price? (n/p): ");
+                                    string nameOrPrice = Console.ReadLine();
+
+                                    // Search for name or price within the category
+                                    if(nameOrPrice[0] == 'n')
+                                    {
+                                        Console.Write("Name of item: ");
+                                        input = Console.ReadLine();
+                                        foreach(var kvp in storage.Search(SearchProp.nameByCategory, input, 0, catInput))
+                                            Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                    }
+                                    else if(nameOrPrice[0] == 'p')
+                                    {
+                                        Console.Write("Price lower than: ");
+                                        priceInput = Console.ReadLine();
+
+                                        if(decimal.TryParse(priceInput, out price))
+                                        {
+                                            foreach(var kvp in storage.Search(SearchProp.priceByCategory, "", price, catInput))
+                                                Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                        }
+                                    }
+                                    else
+                                        Console.WriteLine("Please input 'n' or 'p' fool.");
+                                    Console.WriteLine();
                                     break;
                                 case 0:
                                     Console.Clear();
@@ -166,7 +207,6 @@ namespace ConsoleShopDeluxe
                                 default:
                                     break;
                             }
-
                         } while(showSubMenu != false);
                         break; // Search sub menu end
                     case 3:

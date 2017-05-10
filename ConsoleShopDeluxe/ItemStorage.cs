@@ -22,7 +22,7 @@ namespace ConsoleShopDeluxe
         #endregion
 
         #region Methods
-        public void AddItem(Item item)
+        protected internal void AddItem(Item item)
         {
             if(items.ContainsKey(item))
             {
@@ -34,7 +34,21 @@ namespace ConsoleShopDeluxe
             }
         }
 
-        protected virtual Item RemoveItem(Item item)
+        protected internal Item GetItemByPartNo(string pPartNo)
+        {
+            Item result = null;
+
+            foreach(Item item in items.Keys)
+            {
+                if(item.PartNo == pPartNo)
+                {
+                    result = item;
+                }
+            }
+            return result;
+        }
+
+        protected internal virtual Item RemoveItem(Item item)
         {
             Item result = null;
 
@@ -73,13 +87,13 @@ namespace ConsoleShopDeluxe
             return sorted;
         }
 
-        public IEnumerable<KeyValuePair<Item, int>> Search(SearchProp pSearchProp, string pKey, decimal pPrice = 0)
+        public IEnumerable<KeyValuePair<Item, int>> Search(SearchProp pSearchProp, string pName, decimal pPrice = 0, string pCategory = "")
         {
             switch(pSearchProp)
             {
                 case SearchProp.name:
                     return from kvp in items
-                           where kvp.Key.Name.Contains(pKey)
+                           where kvp.Key.Name.Contains(pName)
                            orderby kvp.Key.Name
                            select kvp;
                 case SearchProp.priceHigher:
@@ -94,12 +108,20 @@ namespace ConsoleShopDeluxe
                            select kvp;
                 case SearchProp.priceAndName:
                     return from kvp in items
-                           where (kvp.Key.Name.Contains(pKey) &&
+                           where (kvp.Key.Name.Contains(pName) &&
                                  (kvp.Key.Price < pPrice))
                                  orderby kvp.Key.Price
                            select kvp;
-                case SearchProp.priceOrNameByCat:
-                    break;
+                case SearchProp.nameByCategory:
+                    return from kvp in items
+                           where kvp.Key.Category.ToString() == pCategory &&
+                           kvp.Key.Name.Contains(pName)
+                           select kvp;
+                case SearchProp.priceByCategory:
+                    return from kvp in items
+                               where (kvp.Key.Category.ToString() == pCategory &&
+                                      kvp.Key.Price < pPrice)
+                                      select kvp;
                 default:
                     break;
             }
