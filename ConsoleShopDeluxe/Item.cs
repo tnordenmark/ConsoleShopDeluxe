@@ -69,4 +69,13 @@ namespace ConsoleShopDeluxe
         priceAndName,
         priceAndCategory
     }
+
+    public enum SearchProp
+    {
+        name,
+        priceLower,
+        priceHigher,
+        priceAndName,
+        priceOrNameByCat
+    }
 }

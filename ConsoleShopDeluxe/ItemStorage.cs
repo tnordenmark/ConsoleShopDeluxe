@@ -38,7 +38,7 @@ namespace ConsoleShopDeluxe
         {
             Item result = null;
 
-            if (items.ContainsKey(item) && items[item] > 0)
+            if(items.ContainsKey(item) && items[item] > 0)
             {
                 items[item] -= 1;
                 result = item;
@@ -51,33 +51,60 @@ namespace ConsoleShopDeluxe
         {
             Dictionary<Item, int> sorted = new Dictionary<Item, int>(items);
 
-            switch (pSortProp)
+            switch(pSortProp)
             {
                 case SortProp.price:
                     return sorted.OrderBy(price => price.Key.Price);
-                    break;
                 case SortProp.name:
                     return from kvp in sorted
                            orderby kvp.Key.Name
                            select kvp;
-                    break;
                 case SortProp.priceAndName:
                     return sorted.OrderBy(price => price.Key.Price).ThenBy(name => name.Key.Name);
-                    break;
                 case SortProp.priceAndCategory:
-                    var query =  from kvp in sorted
-                                 orderby kvp.Key.Price
-                                 group kvp by kvp.Key.Category into catGroup
-                                 select catGroup;
-
-                    var sortedGrouped = query.SelectMany(cat => cat);
-                    return sortedGrouped;
-                    break;
+                    return (from kvp in sorted
+                            orderby kvp.Key.Price
+                            group kvp by kvp.Key.Category into catGroup
+                            select catGroup).SelectMany(cat => cat);
                 default:
                     break;
             }
 
             return sorted;
+        }
+
+        public IEnumerable<KeyValuePair<Item, int>> Search(SearchProp pSearchProp, string pKey, decimal pPrice = 0)
+        {
+            switch(pSearchProp)
+            {
+                case SearchProp.name:
+                    return from kvp in items
+                           where kvp.Key.Name.Contains(pKey)
+                           orderby kvp.Key.Name
+                           select kvp;
+                case SearchProp.priceHigher:
+                    return from kvp in items
+                           where pPrice < kvp.Key.Price
+                           orderby kvp.Key.Price
+                           select kvp;
+                case SearchProp.priceLower:
+                    return from kvp in items
+                           where pPrice > kvp.Key.Price
+                           orderby kvp.Key.Price
+                           select kvp;
+                case SearchProp.priceAndName:
+                    return from kvp in items
+                           where (kvp.Key.Name.Contains(pKey) &&
+                                 (kvp.Key.Price < pPrice))
+                                 orderby kvp.Key.Price
+                           select kvp;
+                case SearchProp.priceOrNameByCat:
+                    break;
+                default:
+                    break;
+            }
+
+            return Enumerable.Empty<KeyValuePair<Item, int>>();
         }
         #endregion
 

@@ -27,64 +27,151 @@ namespace ConsoleShopDeluxe
                 { new Item("3003", "Popcorn", Category.Snacks, 8.90m), 37 }
             }, 0);
 
+            // Show Main menu unless false
             bool showMainMenu = true;
 
+            // Main menu
             do
             {
                 Menu.ShowMenu();
                 Console.Write("$: ");
                 int choice = Menu.GetMainMenuChoice();
-                bool showListItemMenu = true;
+                // Show sub menu unless false
+                bool showSubMenu = true;
 
-                switch (choice)
+                switch(choice)
                 {
                     case 1:
+                        // List sub menu
                         do
                         {
                             Menu.ShowListMenu();
                             Console.Write("$: ");
                             choice = Menu.GetListMenuChoice();
 
-                            switch (choice)
+                            switch(choice)
                             {
                                 case 1:
                                     Menu.PrintHeader();
-                                    foreach (var kvp in storage.Sort(SortProp.price))
+                                    foreach(var kvp in storage.Sort(SortProp.price))
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
                                     Console.WriteLine();
                                     break;
                                 case 2:
                                     Menu.PrintHeader();
-                                    foreach (var kvp in storage.Sort(SortProp.name))
+                                    foreach(var kvp in storage.Sort(SortProp.name))
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
                                     Console.WriteLine();
                                     break;
                                 case 3:
                                     Menu.PrintHeader();
-                                    foreach (var kvp in storage.Sort(SortProp.priceAndName))
+                                    foreach(var kvp in storage.Sort(SortProp.priceAndName))
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
                                     Console.WriteLine();
                                     break;
                                 case 4:
                                     Menu.PrintHeader();
-                                    foreach (var kvp in storage.Sort(SortProp.priceAndCategory))
+                                    foreach(var kvp in storage.Sort(SortProp.priceAndCategory))
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
                                     Console.WriteLine();
                                     break;
                                 case 5:
                                     Menu.PrintHeader();
-                                    foreach (var kvp in storage.Items)
+                                    
+                                    foreach(var kvp in storage.Items)
                                         Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
                                     Console.WriteLine();
                                     break;
                                 case 0:
                                     Console.Clear();
-                                    showListItemMenu = false;
+                                    showSubMenu = false;
                                     break;
                                 default:
                                     break;
                             }
-                        } while (showListItemMenu != false);
+                        } while(showSubMenu != false);
+                        break; // List sub menu end
+                    case 2:
+                        // Search sub menu
+                        do
+                        {
+                            Menu.ShowSearchMenu();
+                            Console.Write("$: ");
+                            choice = Menu.GetSearchMenuChoice();
+
+                            switch(choice)
+                            {
+                                case 1:
+                                    Console.Write("Name of item: ");
+                                    string input = Console.ReadLine();
+                                    Menu.PrintHeader();
+                                    
+                                    foreach(var kvp in storage.Search(SearchProp.name, input))
+                                        Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                    Console.WriteLine();
+                                    break;
+                                case 2:
+                                    Console.Write("Price of item: ");
+                                    input = Console.ReadLine();
+                                    decimal price;
+                                    
+                                    if(decimal.TryParse(input, out price))
+                                    {
+                                        foreach(var kvp in storage.Search(SearchProp.priceHigher, "", price))
+                                            Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                    }
+                                    Console.WriteLine();
+                                    break;
+                                case 3:
+                                    Console.Write("Price of item: ");
+                                    input = Console.ReadLine();
+
+                                    if(decimal.TryParse(input, out price))
+                                    {
+                                        foreach(var kvp in storage.Search(SearchProp.priceLower, "", price))
+                                            Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                    }
+                                    Console.WriteLine();
+                                    break;
+                                case 4:
+                                    Console.Write("Name of item: ");
+                                    input = Console.ReadLine();
+                                    Console.Write("Price lower than: ");
+                                    string priceInput;
+                                    priceInput = Console.ReadLine();
+
+                                    if(decimal.TryParse(priceInput, out price))
+                                    {
+                                        var result = storage.Search(SearchProp.priceAndName, input, price);
+
+                                        if(result.Count() == 0)
+                                            Console.WriteLine("No match found.");
+                                        else
+                                            foreach(var kvp in result)
+                                            {
+                                                Menu.PrintHeader();
+                                                Console.WriteLine("{0} {1}", kvp.Key, kvp.Value);
+                                            }
+                                    }
+                                    Console.WriteLine();
+                                    break;
+                                case 5:
+                                    Console.Write("Category");
+                                    string catInput = Console.ReadLine();
+                                    break;
+                                case 0:
+                                    Console.Clear();
+                                    showSubMenu = false;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                        } while(showSubMenu != false);
+                        break; // Search sub menu end
+                    case 3:
+                        break;
+                    case 4:
                         break;
                     case 0:
                         Console.WriteLine("Press any key to exit application.");
@@ -94,7 +181,7 @@ namespace ConsoleShopDeluxe
                     default:
                         break;
                 }
-            } while (showMainMenu != false);
+            } while(showMainMenu != false);
         }
     }
 }

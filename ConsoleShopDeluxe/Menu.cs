@@ -36,6 +36,20 @@ namespace ConsoleShopDeluxe
         }
 
         /// <summary>
+        /// Search item sub menu.
+        /// </summary>
+        internal static void ShowSearchMenu()
+        {
+            Console.WriteLine("### Search for  items by... ###");
+            Console.WriteLine("1) Name");
+            Console.WriteLine("2) Price higher than");
+            Console.WriteLine("3) Price lower than");
+            Console.WriteLine("4) Price and Name");
+            Console.WriteLine("5) Price or Name from Category");
+            Console.WriteLine("0) Back to Main");
+        }
+
+        /// <summary>
         /// Handle user input for Main menu.
         /// </summary>
         /// <returns></returns>
@@ -56,6 +70,22 @@ namespace ConsoleShopDeluxe
         /// </summary>
         /// <returns></returns>
         internal static int GetListMenuChoice()
+        {
+            string input = Console.ReadLine();
+            int choice;
+
+            if(!int.TryParse(input, out choice) && choice < 0 || choice > 5)
+            {
+                Console.WriteLine("Please enter a valid choice.\n");
+            }
+            return choice;
+        }
+
+        /// <summary>
+        /// Handle user input for Search menu.
+        /// </summary>
+        /// <returns></returns>
+        internal static int GetSearchMenuChoice()
         {
             string input = Console.ReadLine();
             int choice;
